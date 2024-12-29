@@ -79,3 +79,14 @@ class TestBooksCollector:
         collector.add_new_book(book_name)
         books_genre = collector.get_books_genre()
         assert book_name in books_genre
+
+    def test_get_book_genre_method(self, collector):
+        collector.add_new_book("Гарри Поттер")
+        collector.set_book_genre("Гарри Поттер", "Фантастика")
+        assert collector.get_book_genre("Гарри Поттер") == "Фантастика"
+
+    def test_get_list_of_favorites_books_method(self, collector):
+        collector.add_new_book("Гарри Поттер")
+        collector.add_new_book("Тёмная Башня")
+        collector.add_book_in_favorites("Гарри Поттер")
+        assert collector.get_list_of_favorites_books() == ["Гарри Поттер"]
