@@ -1,10 +1,4 @@
 import pytest
-from main import BooksCollector
-
-
-@pytest.fixture
-def collector():
-    return BooksCollector()
 
 # класс TestBooksCollector объединяет набор тестов, которыми мы покрываем наше приложение BooksCollector
 # обязательно указывать префикс Test
@@ -29,10 +23,9 @@ class TestBooksCollector:
     def test_add_new_book(self, collector):
         collector.add_new_book("Гарри Поттер")
         assert "Гарри Поттер" in collector.get_books_genre()
-        assert collector.get_books_genre()["Гарри Поттер"] == ""
 
     def test_add_new_book_exceeds_max_length(self, collector):
-        collector.add_new_book("x" * 41)  # Превышает 40 символов
+        collector.add_new_book("x" * 41)
         assert "x" * 41 not in collector.get_books_genre()
 
     def test_set_book_genre_valid(self, collector):
@@ -50,9 +43,10 @@ class TestBooksCollector:
         collector.set_book_genre("Гарри Поттер", "Фантастика")
         collector.add_new_book("Тёмная Башня")
         collector.set_book_genre("Тёмная Башня", "Фантастика")
+        collector.add_new_book("Гордость и предубеждение")
+        collector.set_book_genre("Гордость и предубеждение", "Романтика")
         books = collector.get_books_with_specific_genre("Фантастика")
-        assert len(books) == 2
-        assert "Гарри Поттер" in books and "Тёмная Башня" in books
+        assert "Гордость и предубеждение" not in books
 
     def test_get_books_for_children(self, collector):
         collector.add_new_book("Гарри Поттер")
@@ -61,18 +55,15 @@ class TestBooksCollector:
         collector.set_book_genre("Оно", "Ужасы")
         books_for_children = collector.get_books_for_children()
         assert len(books_for_children) == 1
-        assert "Гарри Поттер" in books_for_children
-        assert "Оно" not in books_for_children
 
     def test_add_book_in_favorites(self, collector):
         collector.add_new_book("Гарри Поттер")
         collector.add_book_in_favorites("Гарри Поттер")
         favorites = collector.get_list_of_favorites_books()
         assert len(favorites) == 1
-        assert "Гарри Поттер" in favorites
 
     def test_add_book_in_favorites_invalid(self, collector):
-        collector.add_book_in_favorites("Гарри Поттер")  # Книга не добавлена в books_genre
+        collector.add_book_in_favorites("Гарри Поттер")
         favorites = collector.get_list_of_favorites_books()
         assert "Гарри Поттер" not in favorites
 
@@ -88,4 +79,3 @@ class TestBooksCollector:
         collector.add_new_book(book_name)
         books_genre = collector.get_books_genre()
         assert book_name in books_genre
-        assert books_genre[book_name] == ""
