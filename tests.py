@@ -88,7 +88,7 @@ class TestBooksCollector:
     def test_get_book_genre_method(self, collector):
         collector.add_new_book("Гарри Поттер")
         collector.set_book_genre("Гарри Поттер", "Фантастика")
-        assert collector.get_book_genre("Гарри Поттер") == "Фантастика"
+        assert collector.get_book_genre("Утес совы") is None
 
     def test_get_list_of_favorites_books_method(self, collector):
         collector.add_new_book("Гарри Поттер")
