@@ -74,11 +74,16 @@ class TestBooksCollector:
         favorites = collector.get_list_of_favorites_books()
         assert len(favorites) == 0
 
-    @pytest.mark.parametrize("book_name", ["Гарри Поттер", "Тёмная Башня"])
-    def test_get_books_genre(self, collector, book_name):
-        collector.add_new_book(book_name)
+    @pytest.mark.parametrize("books", [
+        ["Гарри Поттер", "Тёмная Башня"],
+        ["Гордость и предубеждение", "1984"]
+    ])
+    def test_get_books_genre(self, collector, books):
+        for book in books:
+            collector.add_new_book(book)
         books_genre = collector.get_books_genre()
-        assert book_name in books_genre
+        for book in books:
+            assert book in books_genre
 
     def test_get_book_genre_method(self, collector):
         collector.add_new_book("Гарри Поттер")
